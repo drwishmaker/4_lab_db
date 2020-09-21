@@ -25,7 +25,7 @@ namespace _4_lab_db
         
         public SQLiteConnection dbConnect;
         public string command = "";
-        int count;
+        public int count;
 
         private void createDB()
         {
@@ -35,16 +35,11 @@ namespace _4_lab_db
             if (!File.Exists("./library.db"))
                 SQLiteConnection.CreateFile("library.db");
 
-            command = "CREATE TABLE IF NOT EXISTS [books]([id] INTEGER PRIMARY KEY AUTOINCREMENT, [author] VARCHAR(45), [genre] VARCHAR(45), [publishingHouse] VARCHAR(45), [yearOfIssue] INTEGER, [number] INTEGER)";
+            command = "CREATE TABLE IF NOT EXISTS [books]([id] INTEGER PRIMARY KEY AUTOINCREMENT, [author] VARCHAR(45), [bookTitle] VARCHAR(60), [genre] VARCHAR(45), " +
+                "[publishingHouse] VARCHAR(45), [yearOfIssue] INTEGER, [number] INTEGER)";
             SQLiteCommand commandCreate = new SQLiteCommand(command, dbConnect);
             dbConnect.Open();
             commandCreate.ExecuteNonQuery();
-            dbConnect.Close();
-
-            dbConnect.Open();
-            command = "INSERT INTO [books]([author], [genre], [publishingHouse], [yearOfIssue], [number]) VALUES ('jojo', 'golden wind', 'italia', 2000, 5)";
-            SQLiteCommand commandAdd = new SQLiteCommand(command, dbConnect);
-            commandAdd.ExecuteNonQuery();
             dbConnect.Close();
 
             dataGridView1.Rows.Clear();
@@ -70,7 +65,7 @@ namespace _4_lab_db
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             dbConnect.Open();
-            string commandInsert = "INSERT INTO [books]([author], [genre], [publishingHouse], [yearOfIssue], [number]) VALUES ('"+ textBoxAuthor.Text +"', '"+ textBoxGenre.Text +"', '"+ textBoxPubhouse.Text +"', "+ textBoxYear.Text + ", " + textBoxNum.Text + ")";
+            string commandInsert = "INSERT INTO [books]([author], [bookTitle], [genre], [publishingHouse], [yearOfIssue], [number]) VALUES ('"+ textBoxAuthor.Text +"', '" + textBoxTitle.Text +"','"+ textBoxGenre.Text +"', '"+ textBoxPubhouse.Text +"', "+ numericUpDownYear.Value + ", " + numericUpDownNum.Value + ")";
             SQLiteCommand addCommand = new SQLiteCommand(commandInsert, dbConnect);
             addCommand.ExecuteNonQuery();
 
@@ -80,13 +75,10 @@ namespace _4_lab_db
             DataTable table = new DataTable();
             adapter.Fill(table);
 
-            //if (table.Rows.Count > 0)
-            //{
-            //    for (int i = 0; i < table.Rows.Count; i++)
-            //        dataGridView1.Rows.Add(table.Rows[i].ItemArray);
-            //}
-
-            dataGridView1.Rows.Add(table.Rows[++count].ItemArray);
+            if (table.Rows.Count == 1)
+                dataGridView1.Rows.Add(table.Rows[count].ItemArray);
+            else
+                dataGridView1.Rows.Add(table.Rows[++count].ItemArray);
             dbConnect.Close();
         }
 
@@ -112,16 +104,9 @@ namespace _4_lab_db
                     dataGridView1.Rows.Add(table.Rows[i].ItemArray);
                     count = i;
                 }
+                fillTextBox();
             }
             dbConnect.Close();
-
-            int row = dataGridView1.CurrentRow.Index;
-            numericUpDownId.Value = Convert.ToDecimal(dataGridView1[0, row].Value);
-            textBoxAuthor.Text = Convert.ToString(dataGridView1[1, row].Value);
-            textBoxGenre.Text = Convert.ToString(dataGridView1[2, row].Value);
-            textBoxPubhouse.Text = Convert.ToString(dataGridView1[3, row].Value);
-            textBoxYear.Text = Convert.ToString(dataGridView1[4, row].Value);
-            textBoxNum.Text = Convert.ToString(dataGridView1[5, row].Value);
         }
 
         private void buttonChange_Click(object sender, EventArgs e)
@@ -129,8 +114,8 @@ namespace _4_lab_db
             if (dataGridView1.CurrentRow.Selected == true)
             {
                 dbConnect.Open();
-                command = "UPDATE books SET author = '" + textBoxAuthor.Text + "', genre = '"+ textBoxGenre.Text +"', publishingHouse = '" + textBoxPubhouse.Text + "', yearOfIssue = '" + 
-                    textBoxYear.Text + "', number = '" + textBoxNum.Text + "' where id = " + numericUpDownId.Value;
+                command = "UPDATE books SET author = '" + textBoxAuthor.Text + "', bookTitle = '" + textBoxTitle.Text + "', genre = '" + textBoxGenre.Text +"', publishingHouse = '" + textBoxPubhouse.Text + "', yearOfIssue = '" + 
+                    numericUpDownYear.Value + "', number = '" + numericUpDownNum.Value + "' where id = " + numericUpDownId.Value;
                 SQLiteCommand commandUpdate = new SQLiteCommand(command, dbConnect);
                 commandUpdate.ExecuteNonQuery();
 
@@ -159,13 +144,19 @@ namespace _4_lab_db
 
         private void dataGridView1_Click(object sender, EventArgs e)
         {
+            fillTextBox();
+        }
+
+        private void fillTextBox()
+        {
             int row = dataGridView1.CurrentRow.Index;
             numericUpDownId.Value = Convert.ToDecimal(dataGridView1[0, row].Value);
             textBoxAuthor.Text = Convert.ToString(dataGridView1[1, row].Value);
-            textBoxGenre.Text = Convert.ToString(dataGridView1[2, row].Value);
-            textBoxPubhouse.Text = Convert.ToString(dataGridView1[3, row].Value);
-            textBoxYear.Text = Convert.ToString(dataGridView1[4, row].Value);
-            textBoxNum.Text = Convert.ToString(dataGridView1[5, row].Value);
+            textBoxTitle.Text = Convert.ToString(dataGridView1[2, row].Value);
+            textBoxGenre.Text = Convert.ToString(dataGridView1[3, row].Value);
+            textBoxPubhouse.Text = Convert.ToString(dataGridView1[4, row].Value);
+            numericUpDownYear.Value = Convert.ToDecimal(dataGridView1[5, row].Value);
+            numericUpDownNum.Value = Convert.ToDecimal(dataGridView1[6, row].Value);
         }
     }
 }

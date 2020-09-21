@@ -31,6 +31,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.author = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bookTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pubHouse = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.year = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -40,12 +41,15 @@
             this.textBoxAuthor = new System.Windows.Forms.TextBox();
             this.textBoxGenre = new System.Windows.Forms.TextBox();
             this.textBoxPubhouse = new System.Windows.Forms.TextBox();
-            this.textBoxYear = new System.Windows.Forms.TextBox();
-            this.textBoxNum = new System.Windows.Forms.TextBox();
             this.buttonChange = new System.Windows.Forms.Button();
             this.numericUpDownId = new System.Windows.Forms.NumericUpDown();
+            this.textBoxTitle = new System.Windows.Forms.TextBox();
+            this.numericUpDownYear = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownNum = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownId)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownYear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNum)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -54,15 +58,16 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id,
             this.author,
+            this.bookTitle,
             this.genre,
             this.pubHouse,
             this.year,
             this.number});
-            this.dataGridView1.Location = new System.Drawing.Point(1, 0);
+            this.dataGridView1.Location = new System.Drawing.Point(16, 0);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(643, 218);
+            this.dataGridView1.Size = new System.Drawing.Size(744, 218);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.Click += new System.EventHandler(this.dataGridView1_Click);
             // 
@@ -77,6 +82,12 @@
             this.author.HeaderText = "author";
             this.author.Name = "author";
             this.author.ReadOnly = true;
+            // 
+            // bookTitle
+            // 
+            this.bookTitle.HeaderText = "book title";
+            this.bookTitle.Name = "bookTitle";
+            this.bookTitle.ReadOnly = true;
             // 
             // genre
             // 
@@ -104,7 +115,7 @@
             // 
             // buttonAdd
             // 
-            this.buttonAdd.Location = new System.Drawing.Point(346, 250);
+            this.buttonAdd.Location = new System.Drawing.Point(766, 0);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(97, 39);
             this.buttonAdd.TabIndex = 2;
@@ -114,7 +125,7 @@
             // 
             // buttonDelete
             // 
-            this.buttonDelete.Location = new System.Drawing.Point(16, 250);
+            this.buttonDelete.Location = new System.Drawing.Point(766, 45);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(97, 39);
             this.buttonDelete.TabIndex = 3;
@@ -124,42 +135,28 @@
             // 
             // textBoxAuthor
             // 
-            this.textBoxAuthor.Location = new System.Drawing.Point(142, 224);
+            this.textBoxAuthor.Location = new System.Drawing.Point(157, 224);
             this.textBoxAuthor.Name = "textBoxAuthor";
             this.textBoxAuthor.Size = new System.Drawing.Size(96, 20);
             this.textBoxAuthor.TabIndex = 5;
             // 
             // textBoxGenre
             // 
-            this.textBoxGenre.Location = new System.Drawing.Point(244, 224);
+            this.textBoxGenre.Location = new System.Drawing.Point(361, 224);
             this.textBoxGenre.Name = "textBoxGenre";
             this.textBoxGenre.Size = new System.Drawing.Size(96, 20);
             this.textBoxGenre.TabIndex = 6;
             // 
             // textBoxPubhouse
             // 
-            this.textBoxPubhouse.Location = new System.Drawing.Point(346, 224);
+            this.textBoxPubhouse.Location = new System.Drawing.Point(463, 224);
             this.textBoxPubhouse.Name = "textBoxPubhouse";
             this.textBoxPubhouse.Size = new System.Drawing.Size(96, 20);
             this.textBoxPubhouse.TabIndex = 7;
             // 
-            // textBoxYear
-            // 
-            this.textBoxYear.Location = new System.Drawing.Point(448, 224);
-            this.textBoxYear.Name = "textBoxYear";
-            this.textBoxYear.Size = new System.Drawing.Size(94, 20);
-            this.textBoxYear.TabIndex = 8;
-            // 
-            // textBoxNum
-            // 
-            this.textBoxNum.Location = new System.Drawing.Point(546, 224);
-            this.textBoxNum.Name = "textBoxNum";
-            this.textBoxNum.Size = new System.Drawing.Size(96, 20);
-            this.textBoxNum.TabIndex = 9;
-            // 
             // buttonChange
             // 
-            this.buttonChange.Location = new System.Drawing.Point(141, 250);
+            this.buttonChange.Location = new System.Drawing.Point(766, 90);
             this.buttonChange.Name = "buttonChange";
             this.buttonChange.Size = new System.Drawing.Size(97, 39);
             this.buttonChange.TabIndex = 10;
@@ -174,15 +171,47 @@
             this.numericUpDownId.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownId.TabIndex = 12;
             // 
+            // textBoxTitle
+            // 
+            this.textBoxTitle.Location = new System.Drawing.Point(259, 224);
+            this.textBoxTitle.Name = "textBoxTitle";
+            this.textBoxTitle.Size = new System.Drawing.Size(96, 20);
+            this.textBoxTitle.TabIndex = 13;
+            // 
+            // numericUpDownYear
+            // 
+            this.numericUpDownYear.Location = new System.Drawing.Point(565, 224);
+            this.numericUpDownYear.Maximum = new decimal(new int[] {
+            3000,
+            0,
+            0,
+            0});
+            this.numericUpDownYear.Name = "numericUpDownYear";
+            this.numericUpDownYear.Size = new System.Drawing.Size(94, 20);
+            this.numericUpDownYear.TabIndex = 14;
+            // 
+            // numericUpDownNum
+            // 
+            this.numericUpDownNum.Location = new System.Drawing.Point(664, 224);
+            this.numericUpDownNum.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            this.numericUpDownNum.Name = "numericUpDownNum";
+            this.numericUpDownNum.Size = new System.Drawing.Size(96, 20);
+            this.numericUpDownNum.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(646, 297);
+            this.ClientSize = new System.Drawing.Size(875, 252);
+            this.Controls.Add(this.numericUpDownNum);
+            this.Controls.Add(this.numericUpDownYear);
+            this.Controls.Add(this.textBoxTitle);
             this.Controls.Add(this.numericUpDownId);
             this.Controls.Add(this.buttonChange);
-            this.Controls.Add(this.textBoxNum);
-            this.Controls.Add(this.textBoxYear);
             this.Controls.Add(this.textBoxPubhouse);
             this.Controls.Add(this.textBoxGenre);
             this.Controls.Add(this.textBoxAuthor);
@@ -193,6 +222,8 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownId)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownYear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,21 +232,23 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn author;
-        private System.Windows.Forms.DataGridViewTextBoxColumn genre;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.Button buttonDelete;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pubHouse;
-        private System.Windows.Forms.DataGridViewTextBoxColumn year;
-        private System.Windows.Forms.DataGridViewTextBoxColumn number;
         private System.Windows.Forms.TextBox textBoxAuthor;
         private System.Windows.Forms.TextBox textBoxGenre;
         private System.Windows.Forms.TextBox textBoxPubhouse;
-        private System.Windows.Forms.TextBox textBoxYear;
-        private System.Windows.Forms.TextBox textBoxNum;
         private System.Windows.Forms.Button buttonChange;
         private System.Windows.Forms.NumericUpDown numericUpDownId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn author;
+        private System.Windows.Forms.DataGridViewTextBoxColumn bookTitle;
+        private System.Windows.Forms.DataGridViewTextBoxColumn genre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pubHouse;
+        private System.Windows.Forms.DataGridViewTextBoxColumn year;
+        private System.Windows.Forms.DataGridViewTextBoxColumn number;
+        private System.Windows.Forms.TextBox textBoxTitle;
+        private System.Windows.Forms.NumericUpDown numericUpDownYear;
+        private System.Windows.Forms.NumericUpDown numericUpDownNum;
     }
 }
 
