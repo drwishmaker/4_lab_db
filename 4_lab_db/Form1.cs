@@ -104,14 +104,16 @@ namespace _4_lab_db
                     dataGridView1.Rows.Add(table.Rows[i].ItemArray);
                     count = i;
                 }
-                fillTextBox();
+                fillAllTextBox();
             }
+            else if (dataGridView1.Rows.Count == 0)
+                clearAllTextBox();
             dbConnect.Close();
         }
 
         private void buttonChange_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.CurrentRow.Selected == true)
+            try
             {
                 dbConnect.Open();
                 command = "UPDATE books SET author = '" + textBoxAuthor.Text + "', bookTitle = '" + textBoxTitle.Text + "', genre = '" + textBoxGenre.Text +"', publishingHouse = '" + textBoxPubhouse.Text + "', yearOfIssue = '" + 
@@ -138,16 +140,19 @@ namespace _4_lab_db
                 dbConnect.Close();
 
             }
-            else
+            catch
+            {
                 MessageBox.Show("Input error", "Error");
+            }
+                
         }
 
         private void dataGridView1_Click(object sender, EventArgs e)
         {
-            fillTextBox();
+            fillAllTextBox();
         }
 
-        private void fillTextBox()
+        private void fillAllTextBox()
         {
             int row = dataGridView1.CurrentRow.Index;
             numericUpDownId.Value = Convert.ToDecimal(dataGridView1[0, row].Value);
@@ -158,5 +163,20 @@ namespace _4_lab_db
             numericUpDownYear.Value = Convert.ToDecimal(dataGridView1[5, row].Value);
             numericUpDownNum.Value = Convert.ToDecimal(dataGridView1[6, row].Value);
         }
+
+        private void clearAllTextBox()
+        {
+            
+            foreach(TextBox tb in this.Controls.OfType<TextBox>())
+            {
+                tb.Clear();
+            }
+
+            foreach(NumericUpDown num in this.Controls.OfType<NumericUpDown>())
+            {
+                num.Value = 0;
+            }
+        }
+
     }
 }
