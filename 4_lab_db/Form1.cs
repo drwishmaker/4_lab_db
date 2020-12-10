@@ -29,7 +29,6 @@ namespace _4_lab_db
 
         private void createDB()
         {
-
             dbConnect = new SQLiteConnection("Data Source = library.db; Version = 3");
 
             if (!File.Exists("./library.db"))
@@ -64,51 +63,85 @@ namespace _4_lab_db
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
+            if (numericUpDownNum.Value > 0)
+            {
+                dbConnect.Open();
+                string commandInsert = "INSERT INTO [books]([author], [bookTitle], [genre], [publishingHouse], [yearOfIssue], [number]) VALUES ('" + textBoxAuthor.Text + "', '" + textBoxTitle.Text + "','" + textBoxGenre.Text + "', '" + textBoxPubhouse.Text + "', " + numericUpDownYear.Value + ", " + numericUpDownNum.Value + ")";
+                SQLiteCommand addCommand = new SQLiteCommand(commandInsert, dbConnect);
+                addCommand.ExecuteNonQuery();
+
+                command = "SELECT * FROM books";
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(command, dbConnect);
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+
+                if (table.Rows.Count == 1)
+                    dataGridView1.Rows.Add(table.Rows[count].ItemArray);
+                else
+                    dataGridView1.Rows.Add(table.Rows[++count].ItemArray);
+                dbConnect.Close();
+            }
+            else
+                MessageBox.Show("Number of pages cant be equal 0", "Error");
+        }
+
+        public void AddRecord()
+        {
             dbConnect.Open();
-            string commandInsert = "INSERT INTO [books]([author], [bookTitle], [genre], [publishingHouse], [yearOfIssue], [number]) VALUES ('"+ textBoxAuthor.Text +"', '" + textBoxTitle.Text +"','"+ textBoxGenre.Text +"', '"+ textBoxPubhouse.Text +"', "+ numericUpDownYear.Value + ", " + numericUpDownNum.Value + ")";
+            string commandInsert = "INSERT INTO [books]([author], [bookTitle], [genre], [publishingHouse], [yearOfIssue], [number]) VALUES ('test', 'test', 'test', 'test', 2000, 20)";
             SQLiteCommand addCommand = new SQLiteCommand(commandInsert, dbConnect);
             addCommand.ExecuteNonQuery();
+            dbConnect.Close();
+        }
 
-            command = "SELECT * FROM books";
+        public int GetCount()
+        {
+            dbConnect.Open();
+            int counter;
+            string command = "SELECT * FROM books;";
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(command, dbConnect);
 
             DataTable table = new DataTable();
             adapter.Fill(table);
-
-            if (table.Rows.Count == 1)
-                dataGridView1.Rows.Add(table.Rows[count].ItemArray);
-            else
-                dataGridView1.Rows.Add(table.Rows[++count].ItemArray);
+            counter = table.Rows.Count;
             dbConnect.Close();
+
+            return counter;
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            dbConnect.Open();
-            command = "DELETE FROM books WHERE id = " + numericUpDownId.Value;
-            SQLiteCommand commandDelete = new SQLiteCommand(command, dbConnect);
-            commandDelete.ExecuteNonQuery();
-
-            command = "SELECT * FROM books";
-            SQLiteDataAdapter adapter = new SQLiteDataAdapter(command, dbConnect);
-
-            DataTable table = new DataTable();
-            adapter.Fill(table);
-
-            dataGridView1.Rows.Clear();
-
-            if (table.Rows.Count > 0)
+            DialogResult dialog = MessageBox.Show("Delete record?","Notification", MessageBoxButtons.YesNo);
+            if (dialog == DialogResult.Yes)
             {
-                for (int i = 0; i < table.Rows.Count; i++)
+                dbConnect.Open();
+                command = "DELETE FROM books WHERE id = " + numericUpDownId.Value;
+                SQLiteCommand commandDelete = new SQLiteCommand(command, dbConnect);
+                commandDelete.ExecuteNonQuery();
+
+                command = "SELECT * FROM books";
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(command, dbConnect);
+
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+
+                dataGridView1.Rows.Clear();
+
+                if (table.Rows.Count > 0)
                 {
-                    dataGridView1.Rows.Add(table.Rows[i].ItemArray);
-                    count = i;
+                    for (int i = 0; i < table.Rows.Count; i++)
+                    {
+                        dataGridView1.Rows.Add(table.Rows[i].ItemArray);
+                        count = i;
+                    }
+                    fillAllTextBox();
                 }
-                fillAllTextBox();
+                else if (dataGridView1.Rows.Count == 0)
+                    clearAllTextBox();
+                dbConnect.Close();
             }
-            else if (dataGridView1.Rows.Count == 0)
-                clearAllTextBox();
-            dbConnect.Close();
+            
         }
 
         private void buttonChange_Click(object sender, EventArgs e)
@@ -167,16 +200,20 @@ namespace _4_lab_db
         private void clearAllTextBox()
         {
             
-            foreach(TextBox tb in this.Controls.OfType<TextBox>())
+            foreach(TextBox tb in Controls.OfType<TextBox>())
             {
                 tb.Clear();
             }
 
-            foreach(NumericUpDown num in this.Controls.OfType<NumericUpDown>())
+            foreach(NumericUpDown num in Controls.OfType<NumericUpDown>())
             {
                 num.Value = 0;
             }
         }
 
+        private void aboutProgramToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Program developed by Krupsky Artemy, student of 484 gr.\n The program create or open data base of library.", "About program");
+        }
     }
 }
